@@ -1,0 +1,219 @@
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator zod {
+  provider              = "zod-prisma"
+  output                = "./zod"
+  relationModel         = true
+  modelCase             = "camelCase"
+  modelSuffix           = "Schema"
+  useDecimalJs          = true
+  prismaJsonNullability = true
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  clerkUserId String   @unique
+  email       String   @unique
+  firstName   String?
+  lastName    String?
+  imageUrl    String?
+  plan        PlanType @default(Trial)
+  credits     Int      @default(300)
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  projects      Project[]
+  TokenUsage    TokenUsage[]
+  Storage       Storage[]
+  subscriptions Subscription[]
+  QuestionUsage QuestionUsage[]
+  Feedback      Feedback[]
+  ErrorLog      ErrorLog[]
+}
+
+model Project {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  integrations Integration[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Integration {
+  id           String          @id @default(cuid())
+  name         String
+  apiKey       String          @unique
+  type         IntegrationType @default(Web)
+  projectId    String
+  project      Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  chatSessions ChatSession[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  plan         PlanType @default(Trial)
+  monthlyUsage Int      @default(0)
+}
+
+model ChatSession {
+  id            String      @id @default(cuid())
+  integrationId String
+  integration   Integration @relation(fields: [integrationId], references: [id], onDelete: Cascade)
+  guidance      String?
+  context       String?
+  messages      Message[]
+  tags          String[]
+  chatMode      ChatMode?
+  stream        Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model Message {
+  id            String      @id @default(cuid())
+  chatSession   ChatSession @relation(fields: [chatSessionId], references: [id], onDelete: Cascade)
+  chatSessionId String
+  role          String
+  content       String
+  recordsCited  Json?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  Citation      Citation[]
+}
+
+enum ChatMode {
+  TURBO
+  AUTO
+}
+
+enum IntegrationType {
+  Web
+  Other
+}
+
+model Citation {
+  id          String       @id @default(cuid())
+  message     Message      @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  messageId   String
+  number      Int
+  type        CitationType
+  url         String?
+  title       String?
+  description String?
+  breadcrumbs String[]
+  hitUrl      String?
+}
+
+enum CitationType {
+  DOCUMENTATION
+  SITE
+  DISCOURSE_POST
+  GITHUB_ISSUE
+  GITHUB_DISCUSSION
+  STACKOVERFLOW_QUESTION
+  DISCORD_FORUM_POST
+  DISCORD_MESSAGE
+  CUSTOM_QUESTION_ANSWER
+}
+
+model TokenUsage {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokens    Int
+  reason    String
+  createdAt DateTime @default(now())
+}
+
+model Storage {
+  userId      String @id
+  storageUsed Int    @default(0)
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum PlanType {
+  Trial
+  Launch
+  Accelerate
+  Scale
+}
+
+enum BillingCycle {
+  Weekly
+  Monthly
+  Yearly
+}
+
+model Subscription {
+  userId                 String       @unique
+  stripeCustomerId       String       @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?      @unique @map(name: "stripe_subscription_id")
+  stripePriceId          String?      @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd DateTime?    @map(name: "stripe_current_period_end")
+  User                   User         @relation(fields: [userId], references: [id])
+  planType               PlanType
+  billingCycle           BillingCycle
+  createdAt              DateTime     @default(now())
+  updatedAt              DateTime     @updatedAt
+  lastTokenReset         DateTime     @default(now())
+
+  @@id([userId, stripeCustomerId])
+}
+
+model QuestionUsage {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questions Int
+  month     Int
+  year      Int
+  createdAt DateTime @default(now())
+}
+
+model Document {
+  id            String       @id @default(cuid())
+  name          String?
+  url           String?
+  icon          String?
+  size          Int?
+  uploadedDate  DateTime     @default(now())
+  integrationId String
+  hash          String?
+  maxDepth      Int?
+  excludeDirs   String[]
+  type          DocumentType
+}
+
+enum DocumentType {
+  FILE
+  URL
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating    Int
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model ErrorLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  error     String
+  context   String?
+  timestamp DateTime @default(now())
+}
