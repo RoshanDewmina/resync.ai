@@ -45,7 +45,7 @@ function Skeleton({
 
 export { Skeleton };
 
-type reTraceWidgetProps = ModalProps & {
+type ResyncWidgetProps = ModalProps & {
   authorization: string;
   integrationId: string;
   guidance?: string;
@@ -77,7 +77,7 @@ type reTraceWidgetProps = ModalProps & {
   };
 };
 
-const reTraceWidget: React.FC<reTraceWidgetProps> = ({
+const ResyncWidget: React.FC<ResyncWidgetProps> = ({
   authorization,
   integrationId,
   guidance,
@@ -384,4 +384,4 @@ const reTraceWidget: React.FC<reTraceWidgetProps> = ({
   );
 };
 
-export default reTraceWidget;
+export default ResyncWidget;

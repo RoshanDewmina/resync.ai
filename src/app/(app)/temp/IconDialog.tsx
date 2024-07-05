@@ -63,14 +63,14 @@ export default function IconDialog() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer 3e78dbe4-80ec-4bbc-b891-bb67018883f7`,
-          // Authorization: `Bearer ${process.env.reTrace_API_KEY}`,
+          // Authorization: `Bearer ${process.env.reSync_API_KEY}`,
         },
         body: JSON.stringify({
           //   integration_id: "f034d36c-388c-40e0-88f7-48c81c7205ad",
           //   messages: [{ role: "user", content: query }],
 
           integration_id: "f034d36c-388c-40e0-88f7-48c81c7205ad",
-          // integration_id: process.env.reTrace_INTEGRATION_ID,
+          // integration_id: process.env.reSync_INTEGRATION_ID,
           guidance: "NON",
           context: "Im a student",
           messages: [
@@ -127,7 +127,7 @@ export default function IconDialog() {
       <Dialog open={open}>
         <DialogContent className="sm:max-w-[850px] max-h-[80vh] overflow-y-auto text-black dark:text-slate-100">
           <DialogHeader>
-            <DialogTitle>reTrace Ai powered search</DialogTitle>
+            <DialogTitle>reSync Ai powered search</DialogTitle>
             <DialogDescription>
               Hi, What can i help you with today?
             </DialogDescription>

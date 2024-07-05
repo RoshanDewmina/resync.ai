@@ -62,7 +62,7 @@ interface ChatSession {
 }
 
 // Define the columns
-export const columns: ColumnDef<ChatSession>[] = [
+const columns: ColumnDef<ChatSession>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -107,7 +107,7 @@ export const columns: ColumnDef<ChatSession>[] = [
   {
     accessorKey: "messages",
     header: "Messages",
-    cell: ({ row }:any) => (
+    cell: ({ row }: any) => (
       <div>
         {row
           .getValue("messages")

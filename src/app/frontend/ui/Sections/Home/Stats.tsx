@@ -5,7 +5,7 @@ const stats = [
   { id: 2, name: "Improvement in Documentation Quality", value: "40%" },
   {
     id: 3,
-    name: "Over reported they had a better experience with reTrace",
+    name: "Over reported they had a better experience with reSync",
     value: "70%",
   },
 ];

@@ -1,4 +1,4 @@
-import { EmailTemplate } from "@/app/emails/page";
+import  EmailPage  from "@/app/emails/page";
 import { resend } from "@/lib/email/index";
 import { emailSchema } from "@/lib/email/utils";
 import { NextResponse } from "next/server";
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       from: "onboarding@resend.dev",
       to: [email],
       subject: "Hello world!",
-      react: EmailTemplate({ firstName: name }),
+      react: EmailPage({ firstName: name }),
       text: "Email powered by Resend.",
     });
 

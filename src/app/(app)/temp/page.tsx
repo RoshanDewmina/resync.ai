@@ -1,7 +1,7 @@
 import React from "react";
 import SearchDialog from "./SearchDialog";
 import IconDialog from "./IconDialog";
-import reTraceWidget from "./SearchDialog";
+import ResynceWidget from "./SearchDialog";
 
 type Props = {};
 
@@ -9,7 +9,7 @@ const page = (props: Props) => {
   return (
     <div>
       {" "}
-      <reTraceWidget
+      <ResynceWidget
         backdrop="blur"
         size="lg"
         isDismissable={false}
