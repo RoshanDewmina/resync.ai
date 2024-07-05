@@ -1,7 +1,8 @@
-
+// api/stripe/route.ts
 import { db } from "@/lib/db";
 import { stripe } from "@/lib/stripe";
 import { auth } from "@clerk/nextjs/server";
+import { Switch } from "@headlessui/react";
 import { NextResponse } from "next/server";
 
 const return_url = process.env.NEXT_BASE_URL + "/";
@@ -35,6 +36,10 @@ export async function POST(request: Request) {
 
     let priceId;
     switch (planType) {
+      case "Trial": // Added case for Trial
+        priceId = process.env.STRIPE_TRIAL_PRICE_ID; // Added line to get the trial price ID
+        break;
+
       case "Launch":
         switch (billingCycle) {
           case "Monthly":

@@ -121,6 +121,8 @@ async function handleInvoicePaymentSucceeded(session: Stripe.Checkout.Session) {
 // Helper functions to determine plan type and billing cycle from price ID
 function getPlanTypeFromPriceId(priceId: string): PlanType {
     switch (priceId) {
+        case process.env.STRIPE_TRIAL_PRICE_ID: // Added case for Trial
+            return "Trial"; // Return Trial plan type
         case process.env.STRIPE_LAUNCH_MONTHLY_PRICE_ID:
         case process.env.STRIPE_LAUNCH_ANNUAL_PRICE_ID:
             return "Launch";
@@ -135,8 +137,11 @@ function getPlanTypeFromPriceId(priceId: string): PlanType {
     }
 }
 
+
 function getBillingCycleFromPriceId(priceId: string): BillingCycle {
     switch (priceId) {
+        case process.env.STRIPE_TRIAL_PRICE_ID: // Added case for Trial
+            return "OneTime"
         case process.env.STRIPE_LAUNCH_MONTHLY_PRICE_ID:
         case process.env.STRIPE_ACCELERATE_MONTHLY_PRICE_ID:
         case process.env.STRIPE_SCALE_MONTHLY_PRICE_ID:
@@ -149,3 +154,4 @@ function getBillingCycleFromPriceId(priceId: string): BillingCycle {
             throw new Error("Unknown price ID");
     }
 }
+

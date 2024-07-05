@@ -46,15 +46,22 @@ export default function Home() {
       <div>
         <label>
           Plan Type:
-          <select value={planType} onChange={(e) => setPlanType(e.target.value)}>
+          <select
+            value={planType}
+            onChange={(e) => setPlanType(e.target.value)}
+          >
             <option value="Launch">Launch</option>
             <option value="Accelerate">Accelerate</option>
             <option value="Scale">Scale</option>
+            <option value="Trial">Trial</option>
           </select>
         </label>
         <label>
           Billing Cycle:
-          <select value={billingCycle} onChange={(e) => setBillingCycle(e.target.value)}>
+          <select
+            value={billingCycle}
+            onChange={(e) => setBillingCycle(e.target.value)}
+          >
             <option value="Monthly">Monthly</option>
             <option value="Annual">Annual</option>
           </select>

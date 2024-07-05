@@ -156,6 +156,7 @@ enum PlanType {
 }
 
 enum BillingCycle {
+  OneTime
   Weekly
   Monthly
   Yearly
