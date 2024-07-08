@@ -80,6 +80,7 @@ const ProjectsPage: React.FC = () => {
           justifyContent: "space-between",
           alignItems: "center",
         }}
+        className="p-6"
       >
         <h1 className="font-bold text-4xl">Projects</h1>
         <CreateDialog

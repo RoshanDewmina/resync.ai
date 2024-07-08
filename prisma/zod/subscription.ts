@@ -12,7 +12,7 @@ export const subscriptionSchema = z.object({
   billingCycle: z.nativeEnum(BillingCycle),
   createdAt: z.date(),
   updatedAt: z.date(),
-  lastTokenReset: z.date(),
+  lastTokenReset: z.date().nullish(),
 })
 
 export interface CompleteSubscription extends z.infer<typeof subscriptionSchema> {

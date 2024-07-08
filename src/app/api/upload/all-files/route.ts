@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 
 export const GET = async (req: NextRequest) => {
+  
   try {
     // Fetch the list of files from the database
     const files = await db.document.findMany();

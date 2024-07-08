@@ -28,13 +28,13 @@ export default function Pricing() {
             Only Pay For What You Use
           </h2>
           <p className="mt-6 text-lg leading-8 text-gray-600 align-middle">
-            Your credits never expire! 
-            <br/>
-            Any unused credits from previous months
-            roll over and can be used anytime. Even if you pause or cancel your
-            subscription, your accumulated credits remain valid and ready for
-            use whenever you return. 
-            <br/>
+            Your tokens never expire!
+            <br />
+            Any unused tokens from previous months roll over and can be used
+            anytime. Even if you pause or cancel your subscription, your
+            accumulated tokens remain valid and ready for use whenever you
+            return.
+            <br />
             Enjoy worry-free credit accumulation!
           </p>
         </div>

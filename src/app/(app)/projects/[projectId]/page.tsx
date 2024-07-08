@@ -7,6 +7,7 @@ import { CreateDialog } from "./_components/createDialog";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { IntegrationsTable } from "./_components/integrationsTable";
+import UploadDocuments from "../../upload/page";
 
 interface Integration {
   id: string;
@@ -105,7 +106,9 @@ const IntegrationPage = ({ params }: { params: { projectId: string } }) => {
         />
       </div>
       <Separator className="my-4" />
-      <div><h1>{}</h1></div>
+      <div>
+        <h1>{}</h1>
+      </div>
       {loading ? (
         <div className="flex items-center justify-center space-x-4">
           <Skeleton className="h-12 w-12 rounded-lg" />
@@ -115,10 +118,16 @@ const IntegrationPage = ({ params }: { params: { projectId: string } }) => {
           </div>
         </div>
       ) : integrations.length > 0 ? (
-        <IntegrationsTable
-          integrations={integrations}
-          onDeleteIntegration={deleteIntegration}
-        />
+        <>
+          <IntegrationsTable
+            integrations={integrations}
+            onDeleteIntegration={deleteIntegration}
+          />
+
+          <div className="p-4 ring-1 ring-inset rounded-xl ring-slate-200 mt-12">
+            <UploadDocuments />
+          </div>
+        </>
       ) : (
         <p className="grid place-content-center justify-center">
           No integrations available.

@@ -4,12 +4,12 @@ import { CompleteIntegration, relatedIntegrationSchema, CompleteMessage, related
 
 export const chatSessionSchema = z.object({
   id: z.string(),
+  name: z.string().nullish(),
   integrationId: z.string(),
   guidance: z.string().nullish(),
   context: z.string().nullish(),
   tags: z.string().array(),
   chatMode: z.nativeEnum(ChatMode).nullish(),
-  stream: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })

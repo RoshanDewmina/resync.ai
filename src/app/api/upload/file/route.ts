@@ -88,7 +88,7 @@ export const POST = async (req: NextRequest) => {
       // Create embeddings and store in Pinecone
       const vectorStore = await PineconeStore.fromDocuments(
         splitDocs,
-        new OpenAIEmbeddings(),
+        new OpenAIEmbeddings( {model: "text-embedding-3-large"}),
         { pineconeIndex, namespace: integrationId }
       );
       await vectorStore.addDocuments(splitDocs);

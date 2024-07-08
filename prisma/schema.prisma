@@ -4,37 +4,31 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// generator zod {
-//   provider              = "zod-prisma"
-//   output                = "./zod"
-//   relationModel         = true
-//   modelCase             = "camelCase"
-//   modelSuffix           = "Schema"
-//   useDecimalJs          = true
-//   prismaJsonNullability = true
-// }
-
-datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+generator zod {
+  provider              = "zod-prisma"
+  output                = "./zod"
+  relationModel         = true
+  modelCase             = "camelCase"
+  modelSuffix           = "Schema"
+  useDecimalJs          = true
+  prismaJsonNullability = true
 }
 
-// datasource db {
-//   provider = "postgresql"
-//   url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-//   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
-// }
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // directUrl = env("DIRECT_URL")
+}
 
 model User {
-  id          String   @id @default(cuid())
-  clerkUserId String   @unique
-  email       String   @unique
+  id          String    @id @default(cuid())
+  clerkUserId String    @unique
+  email       String    @unique
   firstName   String?
   lastName    String?
   imageUrl    String?
-  plan        PlanType @default(Trial)
-  credits     Int      @default(300)
+  plan        PlanType?
+  tokens      Int?
 
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
@@ -45,6 +39,7 @@ model User {
   QuestionUsage QuestionUsage[]
   Feedback      Feedback[]
   ErrorLog      ErrorLog[]
+  TokenPurchase TokenPurchase[]
 }
 
 model Project {
@@ -74,6 +69,7 @@ model Integration {
 
 model ChatSession {
   id            String      @id @default(cuid())
+  name          String?
   integrationId String
   integration   Integration @relation(fields: [integrationId], references: [id], onDelete: Cascade)
   guidance      String?
@@ -81,7 +77,6 @@ model ChatSession {
   messages      Message[]
   tags          String[]
   chatMode      ChatMode?
-  stream        Boolean     @default(false)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 }
@@ -99,8 +94,8 @@ model Message {
 }
 
 enum ChatMode {
-  TURBO
-  AUTO
+  NORMAL
+  ADVANCED
 }
 
 enum IntegrationType {
@@ -149,6 +144,7 @@ model Storage {
 }
 
 enum PlanType {
+  OneTime
   Trial
   Launch
   Accelerate
@@ -173,9 +169,15 @@ model Subscription {
   billingCycle           BillingCycle
   createdAt              DateTime     @default(now())
   updatedAt              DateTime     @updatedAt
-  lastTokenReset         DateTime     @default(now())
+  lastTokenReset         DateTime?    @default(now())
 
   @@id([userId, stripeCustomerId])
+}
+
+model StripeEvent {
+  id        String   @id @default(cuid())
+  type      String
+  createdAt DateTime @default(now())
 }
 
 model QuestionUsage {
@@ -223,4 +225,13 @@ model ErrorLog {
   error     String
   context   String?
   timestamp DateTime @default(now())
+}
+
+model TokenPurchase {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokens    Int
+  amount    Float
+  createdAt DateTime @default(now())
 }

@@ -22,7 +22,9 @@ export async function createVectorStore(splits: any, customerId: string) {
 // Function to retrieve an existing vector store from Pinecone
 export async function getVectorStore(customerId: string) {
   const vectorStore = await PineconeStore.fromExistingIndex(
-    new OpenAIEmbeddings(),
+    new OpenAIEmbeddings({
+      model: "text-embedding-3-large",
+    }),
     { pineconeIndex, namespace: customerId }
   );
   return vectorStore;

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Hero from "../app/frontend/ui/Sections/Home/Hero";
 import Features from "../app/frontend/ui/Sections/Home/Feature";
 import Pricing from "../app/frontend/ui/Sections/Home/Pricing";
@@ -12,6 +12,7 @@ export default function Home() {
     <>
       <Background />
       <Hero />
+      
 
       <div className="mx-auto max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-6 lg:mx-0 lg:max-w-none flex gap-4 mb-8 m-4 p-2">
         <>

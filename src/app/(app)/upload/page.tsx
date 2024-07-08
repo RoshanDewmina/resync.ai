@@ -10,7 +10,14 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { FileIcon, DownloadIcon, Trash2, Globe } from "lucide-react";
+import {
+  FileIcon,
+  DownloadIcon,
+  Trash2,
+  Globe,
+  File,
+  Link,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -30,15 +37,20 @@ interface UploadedFile {
 const UploadDocuments = () => {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [loading, setLoading] = useState(false);
+  const [integrationId, setIntegrationId] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    fetchUploadedFiles();
-  }, []);
+    if (integrationId) {
+      fetchUploadedFiles();
+    }
+  }, [integrationId]);
 
   const fetchUploadedFiles = async () => {
+    if (!integrationId) return;
+
     try {
-      const response = await fetch("/api/upload/all-files");
+      const response = await fetch(`/api/upload/${integrationId}`);
       const files = await response.json();
 
       if (Array.isArray(files)) {
@@ -60,18 +72,21 @@ const UploadDocuments = () => {
     const formData = new FormData(event.target as HTMLFormElement);
     const files = (event.target as HTMLFormElement).file.files;
     const url = (event.target as HTMLFormElement).url.value;
-    const integrationId = (event.target as HTMLFormElement).integrationId.value;
+    const integrationIdValue = (event.target as HTMLFormElement).integrationId.value;
     const maxDepth = (event.target as HTMLFormElement).maxDepth.value;
     const excludeDirs = (
       event.target as HTMLFormElement
     ).excludeDirs.value.split(",");
 
+    // Set the integration ID state
+    setIntegrationId(integrationIdValue);
+
     try {
       const fileUploadResponse = files.length
-        ? await handleFileUpload(files, integrationId)
+        ? await handleFileUpload(files, integrationIdValue)
         : null;
       const urlUploadResponse = url
-        ? await handleUrlUpload(url, integrationId, maxDepth, excludeDirs)
+        ? await handleUrlUpload(url, integrationIdValue, maxDepth, excludeDirs)
         : null;
 
       if (fileUploadResponse?.ok || urlUploadResponse?.ok) {
@@ -134,9 +149,15 @@ const UploadDocuments = () => {
   };
 
   const handleDeleteFile = async (fileId: string) => {
+    if (!integrationId) return;
+
     try {
-      const response = await fetch(`/api/delete-file/${fileId}`, {
+      const response = await fetch(`/api/upload/${integrationId}/delete`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: fileId }),  // Pass the file ID in the request body
       });
 
       if (response.ok) {
@@ -187,7 +208,13 @@ const UploadDocuments = () => {
           </div>
           <div className="space-y-2">
             <Label htmlFor="integrationId">Integration ID</Label>
-            <Input id="integrationId" name="integrationId" required />
+            <Input
+              id="integrationId"
+              name="integrationId"
+              required
+              value={integrationId}
+              onChange={(e) => setIntegrationId(e.target.value)}
+            />
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Loading..." : "Load Documents"}
@@ -197,7 +224,7 @@ const UploadDocuments = () => {
       <CardFooter>
         <div className="grid gap-4">
           <h4 className="text-lg font-medium">Uploaded Documents</h4>
-          <div className="grid gap-2">
+          <div className="h-48 overflow-y-auto">
             {Array.isArray(uploadedFiles) && uploadedFiles.length > 0 ? (
               uploadedFiles.map((file, index) => (
                 <div
@@ -206,18 +233,8 @@ const UploadDocuments = () => {
                 >
                   <div className="flex items-center gap-3">
                     {file.url ? (
-                      <img
-                        src={file.icon || "/default-icon.png"}
-                        alt="icon"
-                        className="h-6 w-6"
-                      />
+                      <Link className="h-6 w-6 text-primary" />
                     ) : (
-                      // <img
-                      //   src={file.icon || "/default-icon.png"}
-                      //   alt="icon"
-                      //   width="6"
-                      //   height="6"
-                      // />
                       <FileIcon className="h-6 w-6 text-primary" />
                     )}
                     <div>

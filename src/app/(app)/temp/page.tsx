@@ -1,38 +1,71 @@
-import React from "react";
-import SearchDialog from "./SearchDialog";
-import IconDialog from "./IconDialog";
-import ResynceWidget from "./SearchDialog";
+import React from 'react';
+import { ResyncWidget } from './resync';
 
-type Props = {};
+function App() {
+  const authorization = '884fef34-4c00-4d85-9a29-21adf9621523';
+  const integrationId = '76882c33-61b7-460d-88b8-260cce563643';
 
-const page = (props: Props) => {
+  const customClassNames = {
+    button: 'text-white',
+    card: 'custom-card-class',
+    cardHeader: 'custom-card-header-class',
+    cardBody: 'custom-card-body-class',
+    searchButton: 'custom-search-button-class',
+    closeButton: 'custom-close-button-class',
+    submitButton: 'custom-submit-button-class',
+  };
+
   return (
-    <div>
-      {" "}
-      <ResynceWidget
-        backdrop="blur"
-        size="lg"
-        isDismissable={false}
-        authorization="e2a4a3b9-f514-42c6-a5d2-921f881bacb3"
-        integrationId="2d053854-ba75-485a-ba46-f0847d5253cb"
-        organizationDisplayName="Your Organization"
-        title="Frontend Radio"
-        description="Hi, What can I help you with today?"
-        primaryBrandColor="#3498db"
-        botAvatarLight={null} // Default to null
-        botAvatarDark={null} // Default to null
-        questions={["What are embeddings?", "How does AI work?"]}
-        searchButtonType="iconSearch" // Choose 'searchbar', 'iconSearch', 'icon' or omit to use 'searchbar'
-        classNames={{
-          searchButton: "custom-search-button-class",
-          closeButton: "custom-close-button-class",
-          submitButton: "custom-submit-button-class",
-        }}
-        children={undefined}
+    <div className="App">
+      <ResyncWidget
+        authorization={authorization}
+        integrationId={integrationId}
+        guidance="Custom guidance text"
+        context="Custom context"
+        role="user"
+        tags={['tag1', 'tag2']}
+        title="Custom Title"
+        description="Custom Description"
+        primaryBrandColor="#123456"
+        searchButtonType="searchBar"
+        classNames={customClassNames}
       />
-      <IconDialog />
+
+<ResyncWidget
+        authorization={authorization}
+        integrationId={integrationId}
+        guidance="Custom guidance text"
+        context="Custom context"
+        role="user"
+        tags={['tag1', 'tag2']}
+        title="Custom Title"
+        description="Custom Description"
+        primaryBrandColor="#123456"
+        botAvatarLight={<div>Light Avatar</div>}
+        botAvatarDark={<div>Dark Avatar</div>}
+        questions={['What are embeddings?', 'How does OpenAI work?']}
+        searchButtonType="iconText"
+        classNames={customClassNames}
+      />
+
+<ResyncWidget
+        authorization={authorization}
+        integrationId={integrationId}
+        guidance="Custom guidance text"
+        context="Custom context"
+        role="user"
+        tags={['tag1', 'tag2']}
+        title="Custom Title"
+        description="Custom Description"
+        // primaryBrandColor=""
+        botAvatarLight={<div>Light Avatar</div>}
+        botAvatarDark={<div>Dark Avatar</div>}
+        questions={['What are embeddings?', 'How does OpenAI work?']}
+        searchButtonType="icon"
+        classNames={customClassNames}
+      />
     </div>
   );
-};
+}
 
-export default page;
+export default App;

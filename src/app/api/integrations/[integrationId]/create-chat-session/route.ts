@@ -5,8 +5,12 @@ export async function POST(req: Request, { params }: { params: { integrationId: 
   const { integrationId } = params;
 
   try {
+    const body = await req.json();
+    const { name } = body;
+    
     const newChatSession = await db.chatSession.create({
       data: {
+        name,
         integration: { connect: { id: integrationId } },
       },
     });

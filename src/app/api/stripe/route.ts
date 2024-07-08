@@ -1,8 +1,7 @@
-// api/stripe/route.ts
 import { db } from "@/lib/db";
 import { stripe } from "@/lib/stripe";
 import { auth } from "@clerk/nextjs/server";
-import { Switch } from "@headlessui/react";
+import { divMode } from "@tsparticles/engine";
 import { NextResponse } from "next/server";
 
 const return_url = process.env.NEXT_BASE_URL + "/";
@@ -18,11 +17,11 @@ export async function POST(request: Request) {
       return new NextResponse("unauthorized", { status: 401 });
     }
 
-    const { planType, billingCycle } = await request.json();
+    const { planType, tokens } = await request.json();
 
     const _userSubscriptions = await db.subscription.findMany({
       where: {
-        userId: clerkUserId,
+        userId: user.id,
       },
     });
 
@@ -35,56 +34,40 @@ export async function POST(request: Request) {
     }
 
     let priceId;
-    switch (planType) {
-      case "Trial": // Added case for Trial
-        priceId = process.env.STRIPE_TRIAL_PRICE_ID; // Added line to get the trial price ID
+    switch (tokens) {
+      case 2500:
+        priceId = process.env.PRICE_ID_20;
         break;
-
-      case "Launch":
-        switch (billingCycle) {
-          case "Monthly":
-            priceId = process.env.STRIPE_LAUNCH_MONTHLY_PRICE_ID;
-            break;
-          case "Annual":
-            priceId = process.env.STRIPE_LAUNCH_ANNUAL_PRICE_ID;
-            break;
-          default:
-            throw new Error("Invalid billing cycle");
-        }
+      case 7000:
+        priceId = process.env.PRICE_ID_50;
         break;
-      case "Accelerate":
-        switch (billingCycle) {
-          case "Monthly":
-            priceId = process.env.STRIPE_ACCELERATE_MONTHLY_PRICE_ID;
-            break;
-          case "Annual":
-            priceId = process.env.STRIPE_ACCELERATE_ANNUAL_PRICE_ID;
-            break;
-          default:
-            throw new Error("Invalid billing cycle");
-        }
+      case 15000:
+        priceId = process.env.PRICE_ID_100;
         break;
-      case "Scale":
-        switch (billingCycle) {
-          case "Monthly":
-            priceId = process.env.STRIPE_SCALE_MONTHLY_PRICE_ID;
-            break;
-          case "Annual":
-            priceId = process.env.STRIPE_SCALE_ANNUAL_PRICE_ID;
-            break;
-          default:
-            throw new Error("Invalid billing cycle");
-        }
+      case 40000:
+        priceId = process.env.PRICE_ID_250;
+        break;
+      case 80000:
+        priceId = process.env.PRICE_ID_500;
+        break;
+      case 170000:
+        priceId = process.env.PRICE_ID_1000;
+        break;
+      case 350000:
+        priceId = process.env.PRICE_ID_2000;
+        break;
+      case 900000:
+        priceId = process.env.PRICE_ID_5000;
         break;
       default:
-        throw new Error("Invalid plan type");
+        throw new Error("Invalid number of tokens");
     }
 
     const stripeSession = await stripe.checkout.sessions.create({
       success_url: return_url,
       cancel_url: return_url,
       payment_method_types: ["card"],
-      mode: "subscription",
+      mode: planType === "OneTime" ? "payment" : "subscription",
       customer_email: user.email,
       line_items: [
         {
@@ -94,6 +77,7 @@ export async function POST(request: Request) {
       ],
       metadata: {
         clerkUserId,
+        tokens: planType === "OneTime" ? tokens.toString() : undefined,
       },
     });
 
@@ -103,3 +87,10 @@ export async function POST(request: Request) {
     return new NextResponse("internal server error", { status: 500 });
   }
 }
+
+
+// <div className="flex items-center justify-center space-x-2">
+                   
+                   
+                    
+//                   </div>

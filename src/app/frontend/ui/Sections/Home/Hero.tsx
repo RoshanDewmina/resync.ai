@@ -48,7 +48,7 @@ function Header({
       >
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5">
-            <span className="sr-only">reSync</span>
+            <span className="sr-only">reTrace</span>
             {/* <Image className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" width={8} height={8} /> */}
           </Link>
         </div>
@@ -133,7 +133,7 @@ function MobileMenu({
       <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
         <div className="flex items-center justify-between">
           <Link href="/" className="-m-1.5 p-1.5">
-            <span className="sr-only">reSync</span>
+            <span className="sr-only">reTrace</span>
             {/* <Image className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" width="8" height="8" alt="" /> */}
           </Link>
           <button
@@ -176,59 +176,62 @@ function MobileMenu({
 // Main hero content component
 function HeroContent() {
   return (
-    <div className="relative isolate px-6 pt-14 lg:px-8">
-      <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
-        <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-          <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-            Get Started Today - Transform Your User Support.{" "}
-            <Link href="#" className="font-semibold text-indigo-600">
-              <span className="absolute inset-0" aria-hidden="true" />
-              Learn more <span aria-hidden="true">&rarr;</span>
-            </Link>
+    <>
+      <div className="relative isolate px-6 pt-14 lg:px-8">
+        <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+          <div className="hidden sm:mb-8 sm:flex sm:justify-center">
+            <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+              Get Started Today - Transform Your User Support.{" "}
+              <Link href="#" className="font-semibold text-indigo-600">
+                <span className="absolute inset-0" aria-hidden="true" />
+                Learn more <span aria-hidden="true">&rarr;</span>
+              </Link>
+            </div>
           </div>
-        </div>
-        <div className="w-full absolute inset-0 h-screen -z-[10]">
-          <SparklesCore
-            id="tsparticlesfullpage"
-            background="transparent"
-            minSize={0.6}
-            maxSize={1.4}
-            particleDensity={20}
-            className="w-full h-full"
-            // particleColor="#FFFFFF"
-            particleColor="#C3B1E1"
-          />
-        </div>
-        <div className="text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-600 sm:text-6xl">
-            Transform Your Content into Answers with
-            <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-800 to-violet-800">
-              reSync
-            </span>
-          </h1>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
-            Provide your users with accurate, real-time responses you can trust.
-            <br />
-            Enhance user satisfaction and reduce support needs with our LLM.
-          </p>
-          <div className="mt-10 flex items-center justify-center gap-x-6">
-            <Link
-              href="/overview"
-              className="rounded-md  bg-indigo-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Get started
-            </Link>
-            <Link
-              href="/docs"
-              // className="text-sm font-semibold leading-6 text-gray-900"
-              className={buttonVariants({ variant: "ghost" })}
-            >
-              Learn more <span aria-hidden="true">→</span>
-            </Link>
+          <div className="w-full absolute inset-0 h-screen -z-[10]">
+            <SparklesCore
+              id="tsparticlesfullpage"
+              background="transparent"
+              minSize={0.6}
+              maxSize={1.4}
+              particleDensity={20}
+              className="w-full h-full"
+              // particleColor="#FFFFFF"
+              particleColor="#C3B1E1"
+            />
+          </div>
+          <div className="text-center">
+            <h1 className="text-4xl font-bold tracking-tight text-gray-600 sm:text-6xl">
+              Transform Your Content into Answers with
+              <br />
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-800 to-violet-800">
+                reTrace
+              </span>
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-gray-600">
+              Provide your users with accurate, real-time responses you can
+              trust.
+              <br />
+              Enhance user satisfaction and reduce support needs with our LLM.
+            </p>
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <Link
+                href="/overview"
+                className="rounded-md  bg-indigo-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Get started
+              </Link>
+              <Link
+                href="/docs"
+                // className="text-sm font-semibold leading-6 text-gray-900"
+                className={buttonVariants({ variant: "ghost" })}
+              >
+                Learn more <span aria-hidden="true">→</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

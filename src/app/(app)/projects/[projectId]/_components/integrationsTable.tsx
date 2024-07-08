@@ -52,14 +52,14 @@ export function IntegrationsTable({
           <TableHead>Created At</TableHead>
           <TableHead>Integration ID</TableHead>
           <TableHead>API key</TableHead>
-          <TableHead className="">View</TableHead>
+          <TableHead className="text-right">Chats</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {integrations.map((integration) => (
           <TableRow key={integration.id}>
             <TableCell className="font-medium">{integration.name}</TableCell>
-            <TableCell>{integration.createdAt}</TableCell>
+            <TableCell>{new Date(integration.createdAt).toLocaleString()}</TableCell>
             <TableCell>{integration.id}</TableCell>
             <TableCell>
               <IntegrationContextMenu integration={integration} />

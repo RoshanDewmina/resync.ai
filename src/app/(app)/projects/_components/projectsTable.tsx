@@ -48,7 +48,7 @@ export function ProjectsTable({
           {projects.map((project) => (
             <TableRow key={project.id}>
               <TableCell className="font-medium">{project.name}</TableCell>
-              <TableCell>{project.createdAt}</TableCell>
+              <TableCell>{new Date(project.createdAt).toLocaleString()}</TableCell>
               {/* <TableCell>{project.updatedAt}</TableCell> */}
               <TableCell className="-translate-x-4 font-bold">
                 <Link

@@ -1,16 +1,25 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
-import { TokenDrawer } from "@/app/(app)/overview/_components/drawer-credits";
+import PurchaseTokens from "@/app/(app)/overview/_components/drawer-tokens";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { ResponsiveLine } from "@nivo/line";
 import { CreditCardIcon, DatabaseIcon } from "lucide-react";
 import { toast } from "sonner";
+import Chart from "@/app/(app)/overview/_components/chart";
+import ProjectsPage from "@/app/(app)/projects/page";
+import { Separator } from "./ui/separator";
 
 const fetchAnalyticsData = async () => {
   const res = await fetch("/api/analytics");
   const data = await res.json();
   return data;
+};
+
+const fetchTokenBalance = async () => {
+  const res = await fetch("/api/user/tokens");
+  const data = await res.json();
+  return data.balance;
 };
 
 export function Overview() {
@@ -19,6 +28,16 @@ export function Overview() {
   const [tokenCount, setTokenCount] = useState(0);
 
   useEffect(() => {
+    const getTokenBalance = async () => {
+      const balance = await fetchTokenBalance();
+      const balanceNumber = Number(balance);
+      if (typeof balance === "number") {
+        setTokenCount(balanceNumber);
+      } else {
+        alert("Error: Balance is not a number");
+      }
+    };
+
     const getAnalyticsData = async () => {
       const data = await fetchAnalyticsData();
       setAnalyticsData(data);
@@ -27,22 +46,18 @@ export function Overview() {
         const usagePercentage = (data.storageUsage / data.storageLimit) * 100;
         setStorageUsage(usagePercentage);
 
-        if (usagePercentage > 90) {
+        if (usagePercentage > 80) {
           toast("Storage Almost Full", {
-            description: "You are using more than 90% of your storage. Consider upgrading your plan.",
+            description:
+              "You are using more than 80% of your storage. Consider upgrading your plan.",
           });
         }
       }
-
-      if (data.tokenCount) {
-        setTokenCount(data.tokenCount);
-      }
     };
-    getAnalyticsData();
-  }, []);
 
-  const currentTime = new Date().getHours();
-  const greeting = currentTime < 12 ? "Good Morning" : "Good Evening";
+    getAnalyticsData();
+    getTokenBalance();
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -51,17 +66,16 @@ export function Overview() {
           <h1 className="text-black text-3xl font-bold">Overview</h1>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
-              <DatabaseIcon className="w-5 h-5 text-black" />
-              <span className="text-black">{storageUsage.toFixed(2)}% Used</span>
+              {/* <DatabaseIcon className="w-5 h-5 text-black" /> */}
+              {/* <span className="text-black">
+                {storageUsage.toFixed(2)}% Used
+              </span> */}
             </div>
             <Button variant="secondary" className="flex items-center gap-1">
               <CreditCardIcon className="w-5 h-5" />
               <span>{tokenCount} Tokens</span>
             </Button>
-            <TokenDrawer />
-            <Button variant="destructive" className="h-9">
-              Upgrade
-            </Button>
+            <PurchaseTokens />
           </div>
         </header>
       </div>
@@ -69,54 +83,16 @@ export function Overview() {
       <main className="flex-1 grid gap-6 mt-10 md:p-10 ring-1 ring-gray-200 rounded-xl p-2">
         {analyticsData && (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 h-1/2 ">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Total Questions</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {analyticsData.totalQuestions}
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Frequently Asked</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {analyticsData.frequentlyAskedQuestions[0]?.content ||
-                      "N/A"}
-                  </div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Suggestions</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">89</div>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Created Projects</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {analyticsData.totalProjects}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <ProjectsPage />
+            <Separator className="my-4" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mt-20">
               <Card>
                 <CardHeader>
                   <CardTitle>Analytics</CardTitle>
                 </CardHeader>
+
                 <CardContent>
-                  <LineChart data={analyticsData.monthlyQuestions} />
+                  <Chart />
                 </CardContent>
               </Card>
               <Card>
@@ -138,9 +114,9 @@ export function Overview() {
                   </div>
                 </CardContent>
               </Card>
-              <Card>
+              {/* <Card>
                 <CardHeader>
-                  <CardTitle>Suggestions</CardTitle>
+                  <CardTitle>Ask Questions</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -171,77 +147,11 @@ export function Overview() {
                     </div>
                   </div>
                 </CardContent>
-              </Card>
+              </Card> */}
             </div>
           </>
         )}
       </main>
-    </div>
-  );
-}
-
-function LineChart({ data }: { data: any[] }) {
-  const formattedData = [
-    {
-      id: "Questions",
-      data: data.map((item) => ({
-        x: `${item.month}/${item.year}`,
-        y: item._sum.questions,
-      })),
-    },
-  ];
-
-  return (
-    <div style={{ height: 400 }}>
-      <ResponsiveLine
-        data={formattedData}
-        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-        xScale={{ type: "point" }}
-        yScale={{
-          type: "linear",
-          min: "auto",
-          max: "auto",
-          stacked: true,
-          reverse: false,
-        }}
-        axisTop={null}
-        axisRight={null}
-        axisBottom={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: "Month/Year",
-          legendOffset: 36,
-          legendPosition: "middle",
-        }}
-        axisLeft={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: "Questions",
-          legendOffset: -40,
-          legendPosition: "middle",
-        }}
-        colors={["#2563eb", "#e11d48"]}
-        pointSize={6}
-        useMesh={true}
-        gridYValues={6}
-        theme={{
-          tooltip: {
-            container: {
-              fontSize: "12px",
-              textTransform: "capitalize",
-              borderRadius: "6px",
-            },
-          },
-          grid: {
-            line: {
-              stroke: "#f3f4f6",
-            },
-          },
-        }}
-        role="application"
-      />
     </div>
   );
 }

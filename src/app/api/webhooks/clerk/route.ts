@@ -93,8 +93,6 @@ export async function POST(req: Request) {
       firstName: first_name,
       lastName: last_name,
       imageUrl: image_url,
-      // plan:'Trial',
-      // credits: 300
     }
 
     console.log('Creating user:', user);

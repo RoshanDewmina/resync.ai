@@ -1,6 +1,6 @@
 import * as z from "zod"
 import { PlanType } from "@prisma/client"
-import { CompleteProject, relatedProjectSchema, CompleteTokenUsage, relatedTokenUsageSchema, CompleteStorage, relatedStorageSchema, CompleteSubscription, relatedSubscriptionSchema, CompleteQuestionUsage, relatedQuestionUsageSchema, CompleteFeedback, relatedFeedbackSchema, CompleteErrorLog, relatedErrorLogSchema } from "./index"
+import { CompleteProject, relatedProjectSchema, CompleteTokenUsage, relatedTokenUsageSchema, CompleteStorage, relatedStorageSchema, CompleteSubscription, relatedSubscriptionSchema, CompleteQuestionUsage, relatedQuestionUsageSchema, CompleteFeedback, relatedFeedbackSchema, CompleteErrorLog, relatedErrorLogSchema, CompleteTokenPurchase, relatedTokenPurchaseSchema } from "./index"
 
 export const userSchema = z.object({
   id: z.string(),
@@ -9,8 +9,8 @@ export const userSchema = z.object({
   firstName: z.string().nullish(),
   lastName: z.string().nullish(),
   imageUrl: z.string().nullish(),
-  plan: z.nativeEnum(PlanType),
-  credits: z.number().int(),
+  plan: z.nativeEnum(PlanType).nullish(),
+  tokens: z.number().int().nullish(),
   createdAt: z.date(),
   updatedAt: z.date(),
 })
@@ -23,6 +23,7 @@ export interface CompleteUser extends z.infer<typeof userSchema> {
   QuestionUsage: CompleteQuestionUsage[]
   Feedback: CompleteFeedback[]
   ErrorLog: CompleteErrorLog[]
+  TokenPurchase: CompleteTokenPurchase[]
 }
 
 /**
@@ -38,4 +39,5 @@ export const relatedUserSchema: z.ZodSchema<CompleteUser> = z.lazy(() => userSch
   QuestionUsage: relatedQuestionUsageSchema.array(),
   Feedback: relatedFeedbackSchema.array(),
   ErrorLog: relatedErrorLogSchema.array(),
+  TokenPurchase: relatedTokenPurchaseSchema.array(),
 }))

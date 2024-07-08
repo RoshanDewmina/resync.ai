@@ -42,14 +42,14 @@ export async function checkStorage(user: User, fileSize: number) {
   });
 }
 
-export async function checkCredits(user: User, creditsRequired: number) {
-  if (user.credits < creditsRequired) {
-    throw new Error('Not enough credits. Please upgrade your plan.');
+export async function checktokens(user: User, tokensRequired: number) {
+  if (user.tokens !== null && user.tokens < tokensRequired) {
+    throw new Error('Not enough tokens. Please upgrade your plan.');
   }
 
   await db.user.update({
     where: { id: user.id },
-    data: { credits: user.credits - creditsRequired }
+    data: { tokens: user.tokens !== null ? user.tokens - tokensRequired : 0 }
   });
 }
 
@@ -63,8 +63,8 @@ export async function createUser(data: Omit<User, 'id' | 'createdAt' | 'updatedA
         firstName: data.firstName,
         lastName: data.lastName,
         imageUrl: data.imageUrl,
-        plan: data.plan || 'Trial', // Default to 'Starter' if not provided
-        credits: data.credits || 300, // Default to 150 if not provided
+        // plan: data.plan || 'Trial', // Default to 'Starter' if not provided
+        tokens: data.tokens || 300,
         
 
       }

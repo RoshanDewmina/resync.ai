@@ -1,4 +1,5 @@
 
+
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { processQuery } from '@/lib/langchain';
@@ -6,10 +7,8 @@ import { PineconeStore } from "@langchain/pinecone";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { checkUserExists } from '@/lib/accountUtils';
-import { checkPrivileges, trackUsage } from '@/lib/privileges';
 
-// Define Token Cost
-const TOKENS_PER_QUESTION = 10;
+
 
 const pc = new Pinecone();
 const pineconeIndex = pc.Index(process.env.PINECONE_INDEX!);
@@ -29,29 +28,23 @@ export async function POST(request: Request, { params }: { params: { chatSession
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    // Check if the user has the privilege to ask questions
-    const canAskQuestions = await checkPrivileges(user.clerkUserId, "maxQuestionsPerMonth");
-    if (!canAskQuestions) {
-      return NextResponse.json({ error: 'Your plan does not allow asking questions.' }, { status: 403 });
-    }
+  
 
-    // Check if the user has enough credits
-    const userData = await db.user.findUnique({
-      where: { id: user.id },
-      select: { credits: true },
-    });
+    const { chatSessionId } = params;
+    const { integration_id, message, chat_mode } = await request.json();
 
-    if (!userData || userData.credits < TOKENS_PER_QUESTION) {
-      return NextResponse.json({ error: 'Not enough credits. Please upgrade your plan.' }, { status: 402 }); // Payment Required status
-    }
-
-    // Track usage of tokens and questions
-    await trackUsage(user.clerkUserId, TOKENS_PER_QUESTION, 1);
+      // Determine token cost based on chat mode
+ let TOKENS_PER_QUESTION;
+ if (chat_mode === 'ADVANCED') {
+   TOKENS_PER_QUESTION = 40; // Adjusted token cost for GPT-4
+ } else {
+   TOKENS_PER_QUESTION = 15; // Adjusted token cost for GPT-3.5
+ }
 
     // Deduct tokens
     await db.user.update({
       where: { id: user.id },
-      data: { credits: { decrement: TOKENS_PER_QUESTION } },
+      data: { tokens: { decrement: TOKENS_PER_QUESTION } },
     });
 
     // Log token usage
@@ -62,10 +55,6 @@ export async function POST(request: Request, { params }: { params: { chatSession
         reason: 'Question asked in chat session',
       },
     });
-
-    const { chatSessionId } = params;
-    const { integration_id, message, stream } = await request.json();
-
     // Validate input
     if (!integration_id || !message || !message.role || !message.content) {
       return NextResponse.json({ error: 'Integration ID and message (with role and content) are required' }, { status: 400 });
@@ -109,7 +98,9 @@ export async function POST(request: Request, { params }: { params: { chatSession
     let vectorStore;
     try {
       vectorStore = await PineconeStore.fromExistingIndex(
-        new OpenAIEmbeddings(),
+        new OpenAIEmbeddings({
+          model: "text-embedding-3-large",
+        }),
         { pineconeIndex, namespace: integration.id }
       );
     } catch (error: any) {
@@ -120,7 +111,7 @@ export async function POST(request: Request, { params }: { params: { chatSession
     // Process the new query
     let response;
     try {
-      response = await processQuery(message.content, vectorStore, chatSessionId);
+      response = await processQuery(message.content, vectorStore, chatSessionId,chat_mode);
     } catch (error: any) {
       console.error('Error processing query:', error);
       return NextResponse.json({ error: 'Error processing query' }, { status: 500 });

@@ -20,7 +20,9 @@ export async function POST(req: NextRequest) {
 
     // Initialize vector store
     const vectorStore = await PineconeStore.fromExistingIndex(
-      new OpenAIEmbeddings(),
+      new OpenAIEmbeddings({
+        model: "text-embedding-3-large",
+      }),
       { pineconeIndex, namespace: clerkUserId }
     );
 

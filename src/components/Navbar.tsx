@@ -15,7 +15,7 @@ export default function Navbar() {
   return (
     <div className="md:hidden border-b mb-4 pb-2 w-full">
       <nav className="flex justify-between w-full items-center">
-        <div className="font-semibold text-lg">Logo</div>
+        <div className="font-semibold text-lg p-4 text-primary">Resync</div>
         <Button variant="ghost" onClick={() => setOpen(!open)}>
           <AlignRight />
         </Button>

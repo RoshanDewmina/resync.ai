@@ -23,7 +23,9 @@ export async function POST(req: NextRequest) {
     }
 
     // Initialize vector store
-    const embeddings = new OpenAIEmbeddings();
+    const embeddings = new OpenAIEmbeddings({
+      model: "text-embedding-3-large",
+    });
     const pineconeStore = new PineconeStore(embeddings, { pineconeIndex });
 
     // Delete the vectors

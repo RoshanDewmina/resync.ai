@@ -1,6 +1,6 @@
+
 "use client";
 import { useEffect, useState } from "react";
-// import type { ChatSession } from "@prisma/client";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { CreateDialog } from "../_components/createDialog";
@@ -13,10 +13,10 @@ interface ApiKeyResponse {
 }
 
 interface ChatSession {
+  name: string;
   id: string;
   createdAt: string;
   updatedAt: string;
-
 }
 
 const IntegrationPage = ({ params }: { params: { integrationId: string } }) => {
@@ -41,7 +41,7 @@ const IntegrationPage = ({ params }: { params: { integrationId: string } }) => {
     }
   }, [integrationId]);
 
-  const createChatSession = async (): Promise<boolean> => {
+  const createChatSession = async (projectName: string): Promise<boolean> => {
     const res = await fetch(
       `/api/integrations/${integrationId}/create-chat-session`,
       {
@@ -49,6 +49,7 @@ const IntegrationPage = ({ params }: { params: { integrationId: string } }) => {
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ name: projectName }),
       }
     );
     if (res.ok) {

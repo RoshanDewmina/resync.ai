@@ -1,8 +1,19 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
+import { auth } from '@clerk/nextjs/server';
+import { getTokenBalance } from '@/lib/tokenUtils';
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
+    const { userId: clerkUserId } = await auth();
+
+    if (!clerkUserId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Get the token balance for the authenticated user
+    const tokenCount = await getTokenBalance(clerkUserId);
+
     // Fetch the total number of questions
     const totalQuestions = await db.questionUsage.count();
 
@@ -21,7 +32,7 @@ export async function GET(request: Request) {
     const monthlyQuestions = await db.questionUsage.groupBy({
       by: ['month', 'year'],
       _sum: { questions: true },
-      orderBy: {  month: 'asc' },
+      orderBy: { month: 'asc' },
     });
 
     return NextResponse.json({
@@ -29,6 +40,7 @@ export async function GET(request: Request) {
       frequentlyAskedQuestions,
       totalProjects,
       monthlyQuestions,
+      tokenCount,
     });
   } catch (error) {
     console.error('Error fetching analytics data:', error);
