@@ -1,28 +1,28 @@
-// pages/api/help/route.ts
-import { NextApiRequest, NextApiResponse } from 'next';
-import {db} from '@/lib/db'
+// app/api/help/route.ts
+import { NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    const { email, content } = req.body;
+export async function POST(req: Request) {
+  try {
+    const { email, content } = await req.json();
 
     if (!email || !content) {
-      return res.status(400).json({ error: 'Email and content are required' });
+      return NextResponse.json({ error: 'Email and content are required' }, { status: 400 });
     }
 
-    try {
-      const newEntry = await db.help.create({
-        data: {
-          email,
-          content,
-        },
-      });
-      res.status(201).json(newEntry);
-    } catch (error) {
-      res.status(500).json({ error: 'Error creating entry' });
-    }
-  } else {
-    res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    const newEntry = await db.help.create({
+      data: {
+        email,
+        content,
+      },
+    });
+
+    return NextResponse.json(newEntry, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ error: 'Error creating entry' }, { status: 500 });
   }
+}
+
+export async function OPTIONS() {
+  return NextResponse.json({ error: 'Method Not Allowed' }, { status: 405 });
 }
