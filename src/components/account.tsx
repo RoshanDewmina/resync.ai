@@ -73,6 +73,9 @@ export function Account() {
       <div className="grid grid-cols-1 p-4 m-4">
         <section>
           <h2 className="text-3xl font-bold p-6">Account Management</h2>
+          <div className=" ring-gray-200 rounded-xl p-2 pb-6">
+            <UserProfile />
+          </div>
           <div className="ring-1 ring-gray-200 rounded-xl p-2">
             {/* <Card>
               <CardHeader>
@@ -112,7 +115,6 @@ export function Account() {
                 <DeleteAccountPage />
               </CardContent>
             </Card> */}
-            <div className="pb-4"><UserProfile /></div>
 
             <DeleteAccountPage />
           </div>

@@ -1,37 +1,48 @@
-/*
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
+import { useState } from "react";
 import { CalendarDaysIcon, HandRaisedIcon } from "@heroicons/react/24/outline";
+import { Button, Input } from "@nextui-org/react";
+import { MessageCircle, HelpCircle } from "lucide-react";
 
 export default function Newsletter() {
+  const [email, setEmail] = useState("");
+  const [content, setContent] = useState("");
+
+  const handleSubmit = async (event:any) => {
+    event.preventDefault();
+    try {
+      const response = await fetch("/api/help/route", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, content }),
+      });
+      if (response.ok) {
+        alert("Your message has been sent!");
+      } else {
+        alert("There was an error sending your message.");
+      }
+    } catch (error) {
+      alert("There was an error sending your message.");
+    }
+  };
+
   return (
     <div className="relative isolate bg-white overflow-visible py-16 sm:py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 ring-1 ring-slate-200 p-6 rounded-xl">
+        <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2 rounded-lg p-2">
           <div className="max-w-xl lg:max-w-lg">
             <h2 className="text-3xl font-bold tracking-tight text-black sm:text-4xl">
-              Enterprice
+              Contact Us
             </h2>
             <p className="mt-4 text-lg leading-8 text-gray-600">
-              Contact Us for Enterprice Solutions and plan based on your
-              specific needs.
+              Contact us for enterprise solutions and plans based on your specific needs.
             </p>
-            <div className="mt-6 flex max-w-md gap-x-4">
+            <form onSubmit={handleSubmit} className="mt-6 flex-col max-w-md gap-x-4">
               <label htmlFor="email-address" className="sr-only">
                 Email address
               </label>
-              <input
+              <Input
                 id="email-address"
                 name="email"
                 type="email"
@@ -39,17 +50,31 @@ export default function Newsletter() {
                 required
                 className="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <button
+              <Input
+                id="content"
+                name="content"
+                type="text"
+                required
+                className="min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-black shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                placeholder="Enter your message"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+              />
+              <Button
+                color="primary"
+                variant="shadow"
                 type="submit"
-                className="flex-none rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                className="flex-none rounded-md  px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
               >
-                Subscribe
-              </button>
-            </div>
+                Send
+              </Button>
+            </form>
           </div>
           <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2">
-            <div className="flex flex-col items-start">
+            {/* <div className="flex flex-col items-start">
               <div className="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
                 <CalendarDaysIcon
                   className="h-6 w-6 text-black"
@@ -58,11 +83,10 @@ export default function Newsletter() {
               </div>
               <dt className="mt-4 font-semibold text-black">Weekly articles</dt>
               <dd className="mt-2 leading-7 text-gray-600">
-                Non laboris consequat cupidatat laborum magna. Eiusmod non irure
-                cupidatat duis commodo amet.
+                Stay updated with our latest insights and articles on various topics including technology, business, and more.
               </dd>
-            </div>
-            <div className="flex flex-col items-start">
+            </div> */}
+            {/* <div className="flex flex-col items-start">
               <div className="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
                 <HandRaisedIcon
                   className="h-6 w-6 text-black"
@@ -71,8 +95,31 @@ export default function Newsletter() {
               </div>
               <dt className="mt-4 font-semibold text-black">No spam</dt>
               <dd className="mt-2 leading-7 text-gray-600">
-                Officia excepteur ullamco ut sint duis proident non adipisicing.
-                Voluptate incididunt anim.
+                We value your privacy. Receive only relevant and useful information, no spam.
+              </dd>
+            </div> */}
+            <div className="flex flex-col items-start">
+              <div className="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
+                <MessageCircle
+                  className="h-6 w-6 text-black"
+                  aria-hidden="true"
+                />
+              </div>
+              <dt className="mt-4 font-semibold text-black">24/7 Support</dt>
+              <dd className="mt-2 leading-7 text-gray-600">
+                Our support team is available 24/7 to assist you with any questions or issues.
+              </dd>
+            </div>
+            <div className="flex flex-col items-start">
+              <div className="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
+                <HelpCircle
+                  className="h-6 w-6 text-black"
+                  aria-hidden="true"
+                />
+              </div>
+              <dt className="mt-4 font-semibold text-black">Custom Solutions</dt>
+              <dd className="mt-2 leading-7 text-gray-600">
+                We offer tailored solutions to meet your unique business needs and goals.
               </dd>
             </div>
           </dl>

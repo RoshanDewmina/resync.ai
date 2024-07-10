@@ -5,6 +5,7 @@ import Background from "../../background";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { DataTable } from "./PricingTable";
 
 const includedFeatures = [
   "Private forum access",
@@ -27,48 +28,19 @@ export default function Pricing() {
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Only Pay For What You Use
           </h2>
-          <p className="mt-6 text-lg leading-8 text-gray-600 align-middle">
+          <p className="mt-6 text-lg leading-8 text-gray-600 align-middle mb-12">
             Your tokens never expire!
             <br />
             Any unused tokens from previous months roll over and can be used
-            anytime. Even if you pause or cancel your subscription, your
+            anytime your
             accumulated tokens remain valid and ready for use whenever you
             return.
-            <br />
-            Enjoy worry-free credit accumulation!
           </p>
         </div>
-        {/* <div className="p-4 sm:p-10 lg:flex-auto overflow-hidden">
-          <h3 className="text-2xl font-bold tracking-tight text-gray-900">
-            Pricing
-          </h3>
-          <p className="mt-6 text-base leading-7 text-gray-600">
-            Experience seamless integration with our AI RAG bot that ingests
-            data from any source, provides accurate responses, and improves your
-            documentation.
-          </p>
-          <div className="mt-10 flex items-center gap-x-4">
-            <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">
-              What’s included
-            </h4>
-            <div className="h-px flex-auto bg-gray-100" />
-          </div>
-          <ul
-            role="list"
-            className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6"
-          >
-            {includedFeatures.map((feature) => (
-              <li key={feature} className="flex gap-x-3">
-                <CheckIcon
-                  className="h-6 w-5 flex-none text-indigo-600"
-                  aria-hidden="true"
-                />
-                {feature}
-              </li>
-            ))}
-          </ul>
-        </div> */}
-        <div className="mt-8 flex flex-col justify-center items-center space-x-2">
+        <div className="grid grid-cols-1 mt-20 ring-1 p-2 rounded-xl items-center pt-6 align-middle justify-center ring-gray-200 ">
+          <DataTable />
+        </div>
+        {/* <div className="mt-8 flex flex-col justify-center items-center space-x-2">
           <Switch id="billing-mode" onClick={handleToggle} />
           <Label
             htmlFor="billing-mode"
@@ -78,8 +50,8 @@ export default function Pricing() {
               ? "Switch to Yearly"
               : "Switch to Monthly"}
           </Label>
-        </div>
-        <div className="mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx-0 lg:max-w-none grid md:grid-cols-3 gap-4">
+        </div> */}
+        {/* <div className="mx-auto mt-16 max-w-2xl rounded-3xl ring-1 ring-gray-200 sm:mt-20 lg:mx-0 lg:max-w-none grid md:grid-cols-3 gap-4">
           {billingCycle === "monthly" && (
             <>
               <div className="p-2 lg:w-full lg:max-w-md lg:flex-shrink-0">
@@ -764,7 +736,7 @@ export default function Pricing() {
               </div>
             </>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );

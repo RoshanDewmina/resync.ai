@@ -15,8 +15,8 @@ generator client {
 // }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
@@ -233,5 +233,12 @@ model TokenPurchase {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   tokens    Int
   amount    Float
+  createdAt DateTime @default(now())
+}
+
+model Help {
+  id        String   @id @default(cuid())
+  email     String
+  content   String
   createdAt DateTime @default(now())
 }

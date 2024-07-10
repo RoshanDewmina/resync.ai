@@ -86,7 +86,7 @@ export function Overview() {
             <ProjectsPage />
             <Separator className="my-4" />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mt-20">
-              <Card>
+              {/* <Card>
                 <CardHeader>
                   <CardTitle>Analytics</CardTitle>
                 </CardHeader>
@@ -94,8 +94,8 @@ export function Overview() {
                 <CardContent>
                   <Chart />
                 </CardContent>
-              </Card>
-              <Card>
+              </Card> */}
+              {/* <Card>
                 <CardHeader>
                   <CardTitle>Frequently Asked Questions</CardTitle>
                 </CardHeader>
@@ -113,7 +113,7 @@ export function Overview() {
                     )}
                   </div>
                 </CardContent>
-              </Card>
+              </Card> */}
               {/* <Card>
                 <CardHeader>
                   <CardTitle>Ask Questions</CardTitle>

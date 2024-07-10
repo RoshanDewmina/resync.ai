@@ -13,6 +13,9 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Clipboard } from "lucide-react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Image from "next/image";
+import Comps from "./comps";
+import { NextUIProvider } from "@nextui-org/react";
+import ResyncWidget from "@/components/widget/widget";
 
 export default function IntegrationComponent() {
   const [copied, setCopied] = useState<string | null>(null);
@@ -23,13 +26,19 @@ export default function IntegrationComponent() {
       description:
         "A versatile button component with various styles and sizes.",
       preview: (
-        <Image
-          src="/components/searchbar.png"
-          width="150"
-          height="150"
-          alt="Search Bar Preview"
-          className="scale-100"
-        />
+        <NextUIProvider>
+          <ResyncWidget
+            // authorization={process.env.RESYNC_API_KEY! as string}
+            // integrationId={process.env.RESYNC_INTEGRATION_ID! as string}
+            authorization="884fef34-4c00-4d85-9a29-21adf9621523"
+            integrationId="76882c33-61b7-460d-88b8-260cce563643"
+            organizationDisplayName="Resync Ai"
+            // title="Hi!"
+            description="How can i Help?"
+            primaryBrandColor="hsl(var--primary)"
+            children={undefined}
+          />
+        </NextUIProvider>
       ),
       instructions: `
         1. Install the component:
@@ -47,36 +56,24 @@ export default function IntegrationComponent() {
       `,
       usage: `
       import React from 'react';
-      import { SearchDialog } from 'resync-widget';
+      import { NextUIProvider } from "@nextui-org/react";
+      import ResyncWidget from "@/components/resync-widget";
       
       function App() {
-        const authorization = '81ef5963-d73c-483f-8b8f-31814c4dd924';
-        const integrationId = '374a0f01-b1d5-4dd6-a98e-dd1b71c5bc23';
-      
-        const customClassNames = {
-          button: 'text-white',
-          card: 'custom-card-class',
-          cardHeader: 'custom-card-header-class',
-          cardBody: 'custom-card-body-class',
-          searchButton: 'custom-search-button-class',
-          closeButton: 'custom-close-button-class',
-          submitButton: 'custom-submit-button-class',
-        };
-      
         return (
-          <div className="App">
-          <SearchDialog
-          authorization="your-api-key"
-          integrationId="your-integration-id"
-          guidance="Custom guidance text (optional)"
-          context="Custom context (optional)"
-          role="user"
-          title="Custom Title"
-          description="Custom Description"
-          searchButtonType="searchbar"
-          classNames={customClassNames}
+        <>
+        <NextUIProvider>
+        <ResyncWidget
+          authorization={process.env.RESYNC_API_KEY! as string}
+          integrationId={process.env.RESYNC_INTEGRATION_ID! as string}
+          organizationDisplayName="Your Organization name“
+          // title="Hi!"
+          description="How can i Help?"
+          primaryBrandColor="hsl(var--primary)"
+          children={undefined}
         />
-          </div>
+      </NextUIProvider>
+        </>
         );
       }
       
@@ -87,13 +84,22 @@ export default function IntegrationComponent() {
     {
       name: "Icon",
       description: "A flexible card component for displaying content.",
-      preview:  <Image
-      src="/components/icon.png"
-      width="100"
-      height="100"
-      alt="Search Bar Preview"
-      className="scale-50"
-    />,
+      preview: (
+        <NextUIProvider>
+          <ResyncWidget
+            // authorization={process.env.RESYNC_API_KEY! as string}
+            // integrationId={process.env.RESYNC_INTEGRATION_ID! as string}
+            authorization="884fef34-4c00-4d85-9a29-21adf9621523"
+            integrationId="76882c33-61b7-460d-88b8-260cce563643"
+            organizationDisplayName="Resync Ai"
+            // title="Hi!"
+            description="How can i Help?"
+            primaryBrandColor="hsl(var--primary)"
+            searchButtonType="iconSearch"
+            children={undefined}
+          />
+        </NextUIProvider>
+      ),
       instructions: `
         1. Install ShadcnUi
         \`\`\`
@@ -118,34 +124,25 @@ export default function IntegrationComponent() {
       `,
       usage: `
       import React from 'react';
-      import { SearchDialog } from 'resync-widget';
+      import { NextUIProvider } from "@nextui-org/react";
+      import ResyncWidget from "@/components/resync-widget";
       
       function App() {
-      
-        const customClassNames = {
-          button: 'text-white',
-          card: 'custom-card-class',
-          cardHeader: 'custom-card-header-class',
-          cardBody: 'custom-card-body-class',
-          searchButton: 'custom-search-button-class',
-          closeButton: 'custom-close-button-class',
-          submitButton: 'custom-submit-button-class',
-        };
-      
         return (
-          <div className="App">
-          <SearchDialog
-          authorization="your-api-key"
-          integrationId="your-integration-id"
-          guidance="Custom guidance text (optional)"
-          context="Custom context (optional)"
-          role="user"
-          title="Custom Title"
-          description="Custom Description"
-          searchButtonType="icon"
-          classNames={customClassNames}
+        <>
+        <NextUIProvider>
+        <ResyncWidget
+          authorization={process.env.RESYNC_API_KEY! as string}
+          integrationId={process.env.RESYNC_INTEGRATION_ID! as string}
+          organizationDisplayName="Your Organization name“
+          // title="Hi!"
+          description="How can i Help?"
+          primaryBrandColor="hsl(var--primary)"
+          searchButtonType="iconSearch"
+          children={undefined}
         />
-          </div>
+      </NextUIProvider>
+        </>
         );
       }
       
@@ -157,13 +154,20 @@ export default function IntegrationComponent() {
       description:
         "A customizable avatar component for displaying user profiles.",
       preview: (
-        <Image
-        src="/components/icontext.png"
-        width="100"
-        height="100"
-        alt="Search Bar Preview"
-        className="scale-50"
-      />
+        <NextUIProvider>
+          <ResyncWidget
+            // authorization={process.env.RESYNC_API_KEY! as string}
+            // integrationId={process.env.RESYNC_INTEGRATION_ID! as string}
+            authorization="884fef34-4c00-4d85-9a29-21adf9621523"
+            integrationId="76882c33-61b7-460d-88b8-260cce563643"
+            organizationDisplayName="Resync Ai"
+            // title="Hi!"
+            description="How can i Help?"
+            primaryBrandColor="hsl(var--primary)"
+            searchButtonType="icon"
+            children={undefined}
+          />
+        </NextUIProvider>
       ),
       instructions: `
         1. Install the component:
@@ -184,34 +188,25 @@ export default function IntegrationComponent() {
       `,
       usage: `
       import React from 'react';
-      import { SearchDialog } from 'resync-widget';
+      import { NextUIProvider } from "@nextui-org/react";
+      import ResyncWidget from "@/components/resync-widget";
       
       function App() {
-      
-        const customClassNames = {
-          button: 'text-white',
-          card: 'custom-card-class',
-          cardHeader: 'custom-card-header-class',
-          cardBody: 'custom-card-body-class',
-          searchButton: 'custom-search-button-class',
-          closeButton: 'custom-close-button-class',
-          submitButton: 'custom-submit-button-class',
-        };
-      
         return (
-          <div className="App">
-          <SearchDialog
-          authorization="your-api-key"
-          integrationId="your-integration-id"
-          guidance="Custom guidance text (optional)"
-          context="Custom context (optional)"
-          role="user"
-          title="Custom Title"
-          description="Custom Description"
-          searchButtonType="iconText"
-          classNames={customClassNames}
+        <>
+        <NextUIProvider>
+        <ResyncWidget
+          authorization={process.env.RESYNC_API_KEY! as string}
+          integrationId={process.env.RESYNC_INTEGRATION_ID! as string}
+          organizationDisplayName="Your Organization name“
+          // title="Hi!"
+          description="How can i Help?"
+          primaryBrandColor="hsl(var--primary)"
+          searchButtonType="icon"
+          children={undefined}
         />
-          </div>
+      </NextUIProvider>
+        </>
         );
       }
       
@@ -233,10 +228,10 @@ export default function IntegrationComponent() {
             <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
               Reusable UI Components
             </h2>
-            <p className="max-w-[800px] text-muted-foreground md:text-xl/relaxed">
+            <p className=" text-muted-foreground md:text-xl/relaxed content-center text-center">
               Explore our collection of beautifully designed and highly
               customizable UI components made with{" "}
-              <span className="underline">ShadcnUI</span>.
+              <span className="underline">NextUi</span>.
             </p>
           </div>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -262,7 +257,7 @@ export default function IntegrationComponent() {
                       </Button>
                     </CopyToClipboard>
                     <div className="text-sm text-muted-foreground">
-                      {copied === component.name ? "Copied!" : "Instructions"}
+                      {copied === component.name ? "Copied!" : "Copy the component"}
                     </div>
                   </div>
                   <div className="text-sm text-muted-foreground flex-col space-y-2">

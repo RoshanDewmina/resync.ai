@@ -23,7 +23,7 @@ const features = [
   {
     name: "Easy Integration",
     description:
-      "Seamlessly integrate our AI RAG bot with your systems using our ready-to-go components and APIs. Get started quickly and effortlessly.",
+      "Seamlessly integrate our LLM with your systems using our ready-to-go components and APIs. Get started quickly and effortlessly.",
     icon: CloudArrowUpIcon,
   },
   {
@@ -50,12 +50,12 @@ const features = [
       "Deliver immediate, curated responses to users when they search or ask for information, improving their experience.",
     icon: ZapIcon,
   },
-  {
-    name: "Comprehensive Analytics",
-    description:
-      "Understand user needs better with analytics that reveal where users are getting stuck and what they are searching for.",
-    icon: ChartBarIcon,
-  },
+  // {
+  //   name: "Comprehensive Analytics",
+  //   description:
+  //     "Understand user needs better with analytics that reveal where users are getting stuck and what they are searching for.",
+  //   icon: ChartBarIcon,
+  // },
   {
     name: "Reduced Support Volume",
     description:
@@ -75,7 +75,7 @@ export default function Features() {
                 Provide Solutions Faster
               </h2>
               <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                A better experience to the User
+                A better experience for the User
               </p>
               <p className="mt-6 text-lg leading-8 text-gray-600">
                 Real-time curated responses, reducing the need for direct

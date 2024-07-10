@@ -7,10 +7,10 @@ const HIW = () => {
     <>
       <div className="mx-auto max-w-2xl sm:text-center">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          How reTrace works
+          {/* How Resync works  */}
         </h2>
         <p className="mt-6 text-lg leading-8 text-gray-600">
-          Our AI RAG bot provides real-time, curated responses to user queries,
+          Our LLM provides real-time, curated responses to user queries,
           reducing the need for direct support and enhancing user satisfaction.
         </p>
       </div>
@@ -22,9 +22,7 @@ const HIW = () => {
                 1. Ingest Data
               </p>
               <p className="mt-6 text-s leading-5 text-gray-600">
-                Upload your documents, and our algorithms create detailed
-                embeddings from the content. These embeddings are used to
-                retrieve information accurately.
+                Upload your documents
               </p>
               {/* <div className="flex items-center justify-center ring-1 ring-gray-200 p-2 rounded-xl mt-6 mx-auto">
                 <AnimatedBeamDemo />
@@ -40,9 +38,7 @@ const HIW = () => {
                 Seamless Integration
               </p>
               <p className="mt-6 text-s leading-5 text-gray-600">
-                Integrating our bot into your website is straightforward. With
-                our user-friendly setup, you can have the bot ready to assist
-                your customers in no time.
+                Integrating our bot into your website
               </p>
             </div>
           </div>
@@ -55,10 +51,8 @@ const HIW = () => {
                 Enhanced Customer Experience
               </p>
               <p className="mt-6 text-s leading-5 text-gray-600">
-                Your customers can interact with the bot directly on your
-                website. They can ask any questions related to the documents you
-                {"'"}ve uploaded, and the bot will provide precise and helpful
-                answers.
+                Your customers can interact with the bot and ask any questions related to the documents you
+                {"'"}ve uploaded
               </p>
               {/* <div className="flex items-center justify-center ring-1 ring-gray-200 p-2 rounded-xl mt-6 mx-auto my-auto">
                 <AnimatedBeamMultipleInputDemo />
