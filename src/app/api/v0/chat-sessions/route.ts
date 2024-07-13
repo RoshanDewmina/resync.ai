@@ -134,7 +134,7 @@
 //   }
 // }
 
-
+// api/v0/chat-sessions/route.ts
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { processQuery } from '@/lib/langchain';
