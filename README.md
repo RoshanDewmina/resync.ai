@@ -1,4 +1,5 @@
-###(In Developement)
+(In Developement)
+
 Resync AI: A Tool for Real-Time, Accurate User Responses
 
 Resync AI is a full-stack application that transforms user-uploaded content into precise, real-time answers for customer inquiries. By leveraging Retrieval Augmented Generation (RAG), it reduces the need for customer support and enhances user satisfaction.
