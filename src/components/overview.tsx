@@ -34,7 +34,8 @@ export function Overview() {
       if (typeof balance === "number") {
         setTokenCount(balanceNumber);
       } else {
-        alert("Error: Balance is not a number");
+        // alert("Error: Balance is not a number");
+        setTokenCount(250);
       }
     };
 

@@ -27,7 +27,7 @@ model User {
   lastName    String?
   imageUrl    String?
   plan        PlanType?
-  tokens      Int?
+  tokens      Int
 
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
